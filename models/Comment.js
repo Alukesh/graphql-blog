@@ -13,7 +13,9 @@ const commentSchema = new mongoose.Schema({
         type: String,
         required: true,
     }
-}, { timestamps })
+},
+    { timestamps: true }
+)
 
 
 module.exports = mongoose.model('comment', commentSchema)
