@@ -6,13 +6,11 @@ const authenticate = (req, res, next) => {
 
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET)
-        req.verifiedUser = verified
+        req.verifiedUser = verified.user
         console.log('Verification success!', verified);
-        // res.json({ msg: 'Verification success!', verified });
         next()
     } catch (error) {
         console.log('Verification failed!');
-        // res.json({ msg: 'Verification failed!', error }); 
         next()
     }
 }
