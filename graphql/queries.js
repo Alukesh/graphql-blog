@@ -1,6 +1,6 @@
-const { GraphQLList, GraphQLID } = require('graphql')
-const { UserType, PostType } = require('./types')
-const { User, Post } = require('../models')
+const { GraphQLList, GraphQLID, GraphQLString } = require('graphql')
+const { UserType, PostType, CommentType } = require('./types')
+const { User, Post, Comment, } = require('../models')
 
 const users = {
     type: new GraphQLList(UserType),
@@ -14,10 +14,8 @@ const users = {
 const user = {
     type: UserType,
     description: 'Retrives one user',
-    args: {
-        id: { type: GraphQLID },
-    },
-    resolve(parent, args) {
+    args: { id: { type: GraphQLID }, },
+    resolve(_, args) {
         return User.findById(args.id)
     }
 }
@@ -25,7 +23,7 @@ const user = {
 const posts = {
     type: new GraphQLList(PostType),
     description: 'Retrives list of posts',
-    resolve(parent, args) {
+    resolve() {
         return Post.find()
     }
 }
@@ -33,12 +31,27 @@ const posts = {
 const post = {
     type: PostType,
     description: 'Retrievs one post',
-    args: {
-        id: { type: GraphQLID }
-    },
-    resolve(parent, args) {
+    args: { id: { type: GraphQLID } },
+    resolve(_, args) {
         return Post.findById(args.id)
     }
 }
 
-module.exports = { user, users, posts, post }
+const comments = {
+    type: GraphQLList(CommentType),
+    description: 'Retrives list of comments',
+    resolve() {
+        return Comment.find()
+    }
+}
+
+const comment = {
+    type: CommentType,
+    description: 'Retrievs one comment',
+    args: { id: { type: GraphQLString } },
+    resolve(_, args) {
+        return Comment.findById(args.id)
+    }
+}
+
+module.exports = { user, users, posts, post, comment, comments }
